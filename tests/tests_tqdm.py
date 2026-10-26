@@ -1566,6 +1566,15 @@ def test_reversed(caperr):
     assert '100%' in err
 
 
+def test_reversed_order():
+    """reversed(tqdm(...)) must yield items in reverse order (not forward)."""
+    assert list(reversed(tqdm([1, 2, 3], disable=True))) == [3, 2, 1]
+    # The bar's iterable is restored after reversed iteration.
+    bar = tqdm([1, 2, 3], disable=True)
+    list(reversed(bar))
+    assert list(bar.iterable) == [1, 2, 3]
+
+
 def test_contains(caperr):
     """Test __contains__ doesn't iterate"""
     with tqdm(list(range(9))) as t:
